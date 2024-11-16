@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joguinho</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='app.css') }}">
+    <style>
+        body {
+            display: flex; /* Usamos flexbox para facilitar o layout */
+            justify-content: space-between; /* Espaço entre os elementos */
+            align-items: flex-start; /* Alinha o conteúdo no início */
+            padding: 20px; /* Espaçamento ao redor do corpo */
+            flex-wrap: wrap; /* Permite quebrar linhas se necessário */
+        }
+        .container {
+            text-align: center; /* Centraliza o conteúdo dentro do container */
+        }
+        .saldo {
+            text-align: right; /* Alinha o texto à direita */
+            margin-left: auto; /* Espaço automático à esquerda para empurrar para a direita */
+            max-width: 200px; /* Define a largura máxima para o saldo */
+        }
+        .button {
+            display: inline-block; /* Faz o botão se comportar como um bloco */
+            padding: 10px 20px; /* Espaçamento interno do botão */
+            margin: 10px 0; /* Espaçamento externo do botão */
+            font-size: 16px; /* Tamanho da fonte do botão */
+            color: white; /* Cor do texto */
+            background-color: #007BFF; /* Cor de fundo do botão */
+            border: none; /* Remove bordas */
+            border-radius: 5px; /* Bordas arredondadas */
+            text-decoration: none; /* Remove sublinhado do link */
+        }
+        .button:hover {
+            background-color: #0056b3; /* Cor de fundo ao passar o mouse */
+        }
+        .sidebar {
+            display: flex;
+            flex-direction: column; /* Alinha os botões verticalmente */
+            justify-content: flex-start; /* Alinha os botões ao topo */
+            margin-right: 20px; /* Espaçamento à direita para separar do restante do conteúdo */
+        }
+        .image-section {
+            display: flex; /* Usamos flexbox para alinhar as imagens e o logo */
+            justify-content: center; /* Centraliza as imagens horizontalmente */
+            align-items: center; /* Centraliza as imagens verticalmente */
+            width: 100%; /* Ocupa toda a largura na parte inferior */
+            text-align: center; /* Centraliza o conteúdo */
+            margin-top: 20px; /* Espaço acima da imagem */
+        }
+        .image-section .images {
+            display: flex; /* Flexbox para as imagens */
+            flex-wrap: wrap; /* Permite quebra de linha das imagens */
+            gap: 10px; /* Espaço entre as imagens */
+            justify-content: center; /* Centraliza as imagens dentro do contêiner */
+        }
+        .image-section img {
+            max-width: 200px; /* Define a largura máxima para as imagens */
+            height: auto; /* Mantém a proporção da imagem */
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="sidebar">
+        <a href="/" class="button">Voltar para a tela principal</a> <!-- Botão para voltar -->
+    </div>
+
+    <div class="container">
+        {% include 'slot_desenho.html' %}
+    
+        <div class="actions">
+            <select id="bet-value">
+                <option value="5">R$ 5</option>
+                <option value="10" selected>R$ 10</option>
+                <option value="20">R$ 20</option>
+                <option value="50">R$ 50</option>
+                <option value="100">R$ 100</option>
+                <option value="250">R$ 250</option>
+                <option value="500">R$ 500</option>
+                <option value="1000">R$ 1000</option>
+            </select>
+            <button class="btn-girar">Girar Roleta</button>
+            <button id="toggle-automatic">AUTO</button>
+        </div>
+
+        <button class="reset-saldo">Resetar saldo</button>
+    </div>
+
+    <div class="saldo">
+        <a href="/sacar" class="button">Sacar</a> <!-- Botão para sacar -->
+    </div>
+
+    <!-- Nova seção para adicionar imagem com o logo ao lado -->
+    <div class="image-section">
+        <div class="images">
+            <img src="/static/FOMY.png" alt="Patrocinador 1">
+            <img src="/static/DOSOFTWARE.png" alt="Patrocinador 2">
+            <img src="/static/DVD.png" alt="Patrocinador 3">
+            <img src="/static/Iegames.png" alt="Patrocinador 4">
+            <img src="/static/Micornoft.png" alt="Patrocinador 5">
+            <img src="/static/Nentendo.png" alt="Patrocinador 6">
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', path='app.js') }}"></script>
+    
+</body>
+</html>
