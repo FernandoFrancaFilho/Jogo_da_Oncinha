@@ -12,8 +12,6 @@ app = FastAPI()
 templates = Jinja2Templates(directory="templates")
 app.mount("/static", StaticFiles(directory="."), name="static")
 
-templates = Jinja2Templates(directory="templates")
-app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # game/player settings
 bank = Bank(saldo=0)
@@ -30,10 +28,10 @@ async def home(request: Request):
     new_game.girar_roleta()
 
     return templates.TemplateResponse(
-        request=request,
-        name="jogo.html",
-        context={"slots": new_game.slots, "player": player, "bank": bank},
-    )
+    "jogo.html",
+    {"request": request, "slots": new_game.slots, "player": player, "bank": bank},
+)
+
 
 
 @app.get("/reset-saldo")
@@ -54,18 +52,26 @@ async def girar_roleta(request: Request, bet_price: float = None):
     # Atualizar o saldo do jogador com base no ganho ou perda
     player.coins += response.get("apenas_ganho", 0) - new_game.bet_price
 
-    return templates.TemplateResponse(
+    # Renderiza o HTML atualizado do jogo
+    html_content = templates.TemplateResponse(
         "slot_desenho.html",
         {
             "request": request,
             "slots": new_game.slots,
             "results": response.get("results", []),
             "apenas_ganho": response.get("apenas_ganho", 0),
-            "player": player,  # O saldo atualizado do jogador
+            "player": player,
             "logs": new_game.logs,
             "bank": bank,
         },
     )
+
+    return {
+        "html": html_content.body.decode("utf-8"),  # Converte o corpo para string
+        "new_balance": player.coins,
+    }
+
+
 
 @app.get("/sacar")
 async def sacar(request: Request):

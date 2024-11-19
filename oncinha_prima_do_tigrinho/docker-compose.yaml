@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: oncinha
+    ports:
+      - "8000:8000"  # A aplicação vai rodar na porta 8000 do container
+    networks:
+      - minha_rede
+
+  nginx:
+    image: nginx:latest
+    container_name: meu_nginx
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "80:80"  # Nginx vai escutar na porta 80 da VPS
+    depends_on:
+      - app
+    networks:
+      - minha_rede
+
+networks:
+  minha_rede:
+    driver: bridge
